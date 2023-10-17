@@ -1,11 +1,9 @@
 #include "main.h"
-
 /**
- * _printf - printf 3ady
+ * _printf - printf function
  * @format: const char pointer
- * Return: 0
+ * Return: b_len
  */
-
 int _printf(const char *format, ...)
 {
 	int (*pfunc)(va_list, flags_t *);
