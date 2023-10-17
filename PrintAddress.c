@@ -2,19 +2,19 @@
 
 /**
  * print_address - prints address of input in hexa format
- * @list: va_list arguments from _printf
- * @flptr: pointer to the struct flags that determines
+ * @l: va_list arguments from _printf
+ * @f: pointer to the struct flags that determines
  * if a flag is passed to _printf
  * Return: number of char printed
  */
-int print_address(va_list list, flags_t *flptr)
+int print_address(va_list l, flags_t *f)
 {
 	char *str;
-	unsigned long int p = va_arg(list, unsigned long int);
+	unsigned long int p = va_arg(l, unsigned long int);
 
 	register int count = 0;
 
-	(void)flptr;
+	(void)f;
 
 	if (!p)
 		return (_puts("(nil)"));
