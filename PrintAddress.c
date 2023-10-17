@@ -1,40 +1,25 @@
 #include "main.h"
-#include <unistd.h>
-/**
- * _putchar - writes the character c to stdout
- * @c: The character will print
- * Return: On success 1.
- * On error, -1 is returned, and errno is set appropriately.
- * Description: _putchar uses a local buffer of 1024 to call write
- * as little as possible
- */
-int _putchar(char ch)
-{
-	static char buf[1024];
-	static int i;
 
-	if (ch == -1 || i >= 1024)
-	{
-		write(1, &buf, i);
-		i = 0;
-	}
-	if (ch != -1)
-	{
-		buf[i] = ch;
-		i++;
-	}
-	return (1);
-}
 /**
- * _puts -> prints a string to stdout
- * @str: pointer to the string to print
- * Return: num of chars has written
+ * print_address - prints address of input in hexa format
+ * @list: va_list arguments from _printf
+ * @flptr: pointer to the struct flags that determines
+ * if a flag is passed to _printf
+ * Return: number of char printed
  */
-int _puts(char *s)
+int print_address(va_list list, flags_t *flptr)
 {
-	register int i;
+	char *str;
+	unsigned long int p = va_arg(list, unsigned long int);
 
-	for (i = 0; s[i] != '\0'; i++)
-		_putchar(s[i]);
-	return (i);
+	register int count = 0;
+
+	(void)flptr;
+
+	if (!p)
+		return (_puts("(nil)"));
+	str = convert(p, 16, 1);
+	count += _puts("0x");
+	count += _puts(str);
+	return (count);
 }
