@@ -1,5 +1,11 @@
 #include <"main.h">
 
+/**
+ * get_print - print function
+ * @s: chrachter
+ * Return: pointer
+*/
+
 int (*get_print(char s))(va_list, flags_t *)
 {
 	ph func_arr[] = {
