@@ -1,40 +1,84 @@
 #include "main.h"
-#include <unistd.h>
-/**
- * _putchar - writes the character c to stdout
- * @c: The character will print
- * Return: On success 1.
- * On error, -1 is returned, and errno is set appropriately.
- * Description: _putchar uses a local buffer of 1024 to call write
- * as little as possible
- */
-int _putchar(char ch)
-{
-	static char buf[1024];
-	static int i;
 
-	if (ch == -1 || i >= 1024)
-	{
-		write(1, &buf, i);
-		i = 0;
-	}
-	if (ch != -1)
-	{
-		buf[i] = ch;
-		i++;
-	}
-	return (1);
+/**
+ * print_hex - prints a number in hexadecimal base,
+ * in lowercase
+ * @list: va_list arguments from _printf
+ * @flptr: pointer to the struct flags that determines
+ * if a flag is passed to _printf
+ * Description: the function calls convert() which in turns converts the input
+ * number into the correct base and returns it as a string
+ * Return: the number of char printed
+ */
+int print_hex(va_list list, flags_t *flptr)
+{
+	unsigned int num = va_arg(list, unsigned int);
+	char *str = convert(num, 16, 1);
+	int count = 0;
+
+	if (flptr->hash == 1 && str[0] != '0')
+		count += _puts("0x");
+	count += _puts(str);
+	return (count);
 }
-/**
- * _puts -> prints a string to stdout
- * @str: pointer to the string to print
- * Return: num of chars has written
- */
-int _puts(char *s)
-{
-	register int i;
 
-	for (i = 0; s[i] != '\0'; i++)
-		_putchar(s[i]);
-	return (i);
+/**
+ * print_hex_big - prints a number in hexadecimal base,
+ * in uppercase
+ * @list: va_list arguments from _printf
+ * @flptr: pointer to the struct that determines
+ * if a flag is passed to _printf
+ * Description: the function calls convert() which in turns converts the input
+ * number into the correct base and returns it as a string
+ * Return: the number of char printed
+ */
+int print_hex_big(va_list list, flags_t *flptr)
+{
+	unsigned int num = va_arg(list, unsigned int);
+	char *str = convert(num, 16, 0);
+	int count = 0;
+
+	if (flptr->hash == 1 && str[0] != '0')
+		count += _puts("0X");
+	count += _puts(str);
+	return (count);
+}
+
+/**
+ * print_binary - prints a number in base 2
+ * @list: va_list arguments from _printf
+ * @flptr: pointer to the struct that determines
+ * if a flag is passed to _printf
+ * Description: the function calls convert() which in turns converts the input
+ * number into the correct base and returns it as a string
+ * Return: the number of char printed
+ */
+int print_binary(va_list list, flags_t *flptr)
+{
+	unsigned int num = va_arg(list, unsigned int);
+	char *str = convert(num, 2, 0);
+
+	(void)flptr;
+	return (_puts(str));
+}
+
+/**
+ * print_octal - prints a number in base 8
+ * @list: va_list arguments from _printf
+ * @flptr: pointer to the struct that determines
+ * if a flag is passed to _printf
+ * Description: the function calls convert() which in turns converts the input
+ * number into the correct base and returns it as a string
+ * Return: the number of char printed
+ */
+int print_octal(va_list list, flags_t *flptr)
+{
+	unsigned int num = va_arg(list, unsigned int);
+	char *str = convert(num, 8, 0);
+	int count = 0;
+
+	if (flptr->hash == 1 && str[0] != '0')
+		count += _putchar('0');
+	count += _puts(str);
+	return (count);
 }
