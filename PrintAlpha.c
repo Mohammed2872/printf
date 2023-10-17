@@ -1,40 +1,34 @@
 #include "main.h"
-#include <unistd.h>
-/**
- * _putchar - writes the character c to stdout
- * @c: The character will print
- * Return: On success 1.
- * On error, -1 is returned, and errno is set appropriately.
- * Description: _putchar uses a local buffer of 1024 to call write
- * as little as possible
- */
-int _putchar(char ch)
-{
-	static char buf[1024];
-	static int i;
 
-	if (ch == -1 || i >= 1024)
-	{
-		write(1, &buf, i);
-		i = 0;
-	}
-	if (ch != -1)
-	{
-		buf[i] = ch;
-		i++;
-	}
-	return (1);
+/**
+ * print_string - loops through a string and prints
+ * every character
+ * @list: va_list arguments from _printf
+ * @flptr: pointer to the struct flags that determines
+ * if a flag is passed to _printf
+ * Return: number of char printed
+ */
+int print_string(va_list list, flags_t *flptr)
+{
+	char *s = va_arg(list, char *);
+
+	(void)flptr;
+
+	if (!s)
+		s = "(null)";
+	return (_puts(s));
 }
-/**
- * _puts -> prints a string to stdout
- * @str: pointer to the string to print
- * Return: num of chars has written
- */
-int _puts(char *s)
-{
-	register int i;
 
-	for (i = 0; s[i] != '\0'; i++)
-		_putchar(s[i]);
-	return (i);
+/**
+ * print_char - prints a character
+ * @list: va_list arguments from _printf
+ * @flptr: pointer to the struct flags that determines
+ * if a flag is passed to _printf
+ * Return: number of char printed
+ */
+int print_char(va_list list, flags_t *flptr)
+{
+	(void)flptr;
+	_putchar(va_arg(list, int));
+	return (1);
 }
