@@ -1,41 +1,26 @@
 #include "main.h"
-#include <unistd.h>
-
 /**
- * _putchar - writes the character c to stdout
- * @c: The character will print
- * Return: On success 1.
- * On error, -1 is returned, and errno is set appropriately.
- * Description: _putchar uses a local buffer of 1024 to call write
- * as little as possible
+ * convert - converts number and Base into string
+ * @number: input number
+ * @Base: input Base
+ * @lwcase: flag if hexa values need to be lowercase
+ * Return: string
  */
-int _putchar(char ch)
+char *convert(unsigned long int number, int Base, int lwcase)
 {
-	static char buf[1024];
-	static int i;
+	static char *rep;
+	static char buff[50];
+	char *pointer;
 
-	if (ch == -1 || i >= 1024)
-	{
-		write(1, &buf, i);
-		i = 0;
-	}
-	if (ch != -1)
-	{
-		buf[i] = ch;
-		i++;
-	}
-	return (1);
-}
-/**
- * _puts -> prints a string to stdout
- * @str: pointer to the string to print
- * Return: num of chars has written
- */
-int _puts(char *s)
-{
-	register int i;
+	rep = (lwcase)
+		? "0123456789abcdef"
+		: "0123456789ABCDEF";
+	pointer = &buff[49];
+	*pointer = '\0';
+	do {
+		*--pointer = rep[number % Base];
+		number /= Base;
+	} while (number != 0);
 
-	for (i = 0; s[i] != '\0'; i++)
-		_putchar(s[i]);
-	return (i);
+	return (pointer);
 }
