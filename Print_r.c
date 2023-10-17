@@ -1,84 +1,108 @@
 #include "main.h"
 
 /**
- * print_int - prints an integer
- * @list: va_list of arguments from _printf
- * @flptr: pointer to the struct flags determining
+ * print_bigS - Non printable characters
+ * (0 < ASCII value < 32 or >= 127) are
+ * printed this way: \x, followed by the ASCII code
+ * value in hexadecimal (upper case - always 2 characters)
+ * @list: va_list arguments from _printf
+ * @f: pointer to the struct flags that determines
  * if a flag is passed to _printf
  * Return: number of char printed
  */
-int print_int(va_list list, flags_t *flptr)
+int print_bigS(va_list list, flags_t *f)
 {
-	int n = va_arg(list, int);
-	int res = count_lptrdigit(n);
-
-	if (f->space == 1 && f->plus == 0 && n >= 0)
-		res += _putchar(' ');
-	if (f->plus == 1 && n >= 0)
-		res += _putchar('+');
-	if (n <= 0)
-		res++;
-	print_number(n);
-	return (res);
-}
-
-/**
- * print_unsigned - prints an unsigned integer
- * @list: va_list of arguments from _printf
- * @flptr: pointer to the struct flags determining
- * if a flag is passed to _printf
- * Return: number of char printed
- */
-int print_unsigned(va_list list, flags_t *flptr)
-{
-	unsigned int u = va_arg(list, unsigned int);
-	char *str = convert(u, 10lptr, 0);
+	int i, count = 0;
+	char *res;
+	char *s = va_arg(list, char *);
 
 	(void)f;
-	return (_puts(str));
+	if (!s)
+		return (_puts("(null)"));
+
+	for (i = 0; s[i]; i++)
+	{
+		if (s[i] > 0 && (s[i] < 32 || s[i] >= 127))
+		{
+			_puts("\\x");
+			count += 2;
+			res = convert(s[i], 16, 0);
+			if (!res[1])
+				count += _putchar('0');
+			count += _puts(res);
+		}
+		else
+			count += _putchar(s[i]);
+	}
+	return (count);
 }
 
 /**
- * print_number - helper function that loops through
- * an integer and prints all its digits
- * @n: integer to be printed
+ * print_rev - prints a string in reverse
+ * @list: argument from _printf
+ * @f: pointer to the struct flags that determines
+ * if a flag is passed to _printf
+ * Return: length of the printed string
  */
-void print_number(int n)
+int print_rev(va_list list, flags_t *f)
 {
-	unsigned int n1;
+	int i = 0, j;
+	char *s = va_arg(list, char *);
 
-	if (n < 0)
-	{
-		_putchar('-');
-		n1 = -n;
-	}
-	else
-		n1 = n;
+	(void)f;
+	if (!s)
+		s = "(null)";
 
-	if (n1 / 10)
-		print_number(n1 / 10);
-	_putchar((n1 % 10) + '0');
+	while (s[i])
+		i++;
+
+	for (j = i - 1; j >= 0; j--)
+		_putchar(s[j]);
+
+	return (i);
 }
 
 /**
- * count_digit - returns the number of digits in an integer
- * for _printf
- * @i: integer to evaluate
- * Return: number of digits
+ * print_rot13 - prints a string using rot13
+ * @list: list of arguments from _printf
+ * @f: pointer to the struct flags that determines
+ * if a flag is passed to _printf
+ * Return: length of the printed string
  */
-int count_digit(int i)
+int print_rot13(va_list list, flags_t *f)
 {
-	unsigned int d = 0;
-	unsigned int u;
+	int i, j;
+	char rot13[] = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+	char ROT13[] = "nopqrstuvwxyzabcdefghijklmNOPQRSTUVWXYZABCDEFGHIJKLM";
+	char *s = va_arg(list, char *);
 
-	if (i < 0)
-		u = i * -1;
-	else
-		u = i;
-	while (u != 0)
+	(void)f;
+	for (j = 0; s[j]; j++)
 	{
-		u /= 10;
-		d++;
+		if (s[j] < 'A' || (s[j] > 'Z' && s[j] < 'a') || s[j] > 'z')
+			_putchar(s[j]);
+		else
+		{
+			for (i = 0; i <= 52; i++)
+			{
+				if (s[j] == rot13[i])
+					_putchar(ROT13[i]);
+			}
+		}
 	}
-	return (d);
+
+	return (j);
+}
+
+/**
+ * print_percent - prints a percent
+ * @list: va_list arguments from _printf
+ * @f: pointer to the struct flags in which we turn the flags on
+ * Return: number of char printed
+ */
+int print_percent(va_list list, flags_t *f)
+{
+	(void)list;
+	(void)f;
+	return (_putchar('%'));
 }
