@@ -1,19 +1,17 @@
 #include <stdarg.h>
 #include <stdio.h>
 #include "main.h"
-
 /**
- * reverse - print reversed string
- * @x: string written
- * Return: num of char
+*print_rev - prints astring in reverse
+*@r: string to print
+*Return: number of chars printed
 */
-
-int print_rev(va_list x)
+int print_rev(va_list r)
 {
 	char *st;
 	int i, j = 0;
 
-	st = va_arg(x, char *);
+	st = va_arg(r, char *);
 	if (st == NULL)
 		st = ")llun(";
 	for (i = 0; st[i] != '\0'; i++)
